@@ -11,7 +11,7 @@ class UsuarioEntity {
     required this.sexo,
   });
 
-  factory UsuarioEntity.fromLocalJson(Map<String, dynamic> json) {
+  factory UsuarioEntity.fromJson(Map<String, dynamic> json) {
     if (!json.containsKey('id')) {
       throw Exception('El json no contiene la llave id');
     }
