@@ -51,14 +51,14 @@ class UsuarioEntity {
   }
 }
 
-class RemoteUsuarioEntity {
+class UsuarioRemoteEntity {
   int id;
   String email;
   String firstName;
   String lastName;
   String avatar;
 
-  RemoteUsuarioEntity({
+  UsuarioRemoteEntity({
     required this.id,
     required this.email,
     required this.firstName,
@@ -66,8 +66,8 @@ class RemoteUsuarioEntity {
     required this.avatar,
   });
 
-  factory RemoteUsuarioEntity.fromJson(Map<String, dynamic> json) {
-    return RemoteUsuarioEntity(
+  factory UsuarioRemoteEntity.fromJson(Map<String, dynamic> json) {
+    return UsuarioRemoteEntity(
       id: json['id'],
       email: json['email'],
       firstName: json['first_name'],

@@ -7,11 +7,11 @@ class DioUsuarioRepository {
 
   DioUsuarioRepository(this.dio);
 
-  Future<List<RemoteUsuarioEntity>> getAll() {
+  Future<List<UsuarioRemoteEntity>> getAll() {
     final url = "$_baseUrl/api/users";
     return dio.get(url).then((response) {
       return response.data
-          .map((usuario) => RemoteUsuarioEntity.fromJson(usuario))
+          .map((usuario) => UsuarioRemoteEntity.fromJson(usuario))
           .toList();
     });
   }
