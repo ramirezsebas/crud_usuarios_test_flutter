@@ -121,11 +121,9 @@ class _UsuarioFormState extends State<UsuarioForm> {
       firstDate: DateTime(1700),
       lastDate: DateTime(2100),
     );
-    
+
     if (fecha != null) {
-      context
-          .read<UsuarioFormChangeNotifier>()
-          .changeFechaNacimiento(fecha);
+      context.read<UsuarioFormChangeNotifier>().changeFechaNacimiento(fecha);
       dateController.text = DateFormatUtils.formatDate(fecha);
     }
   }
@@ -142,30 +140,40 @@ class _UsuarioFormState extends State<UsuarioForm> {
           .extractFirstLetterSelectedSexo(),
     );
 
-    int createdOrUpdatedUser;
-    if (!widget.edit) {
-      createdOrUpdatedUser =
-          await context.read<UsuarioListChangeNotifier>().addUsuario(
-                usuario,
-              );
-    } else {
-      createdOrUpdatedUser =
-          await context.read<UsuarioListChangeNotifier>().updateUsuario(
-                usuario,
-              );
-    }
-
-    if (createdOrUpdatedUser > 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(widget.edit ? 'Usuario Modificado' : 'Usuario creado'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } else {
+    try {
+      int createdOrUpdatedUser;
+      if (!widget.edit) {
+        createdOrUpdatedUser =
+            await context.read<UsuarioListChangeNotifier>().addUsuario(
+                  usuario,
+                );
+      } else {
+        createdOrUpdatedUser =
+            await context.read<UsuarioListChangeNotifier>().updateUsuario(
+                  usuario,
+                );
+      }
+      if (createdOrUpdatedUser > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text(widget.edit ? 'Usuario Modificado' : 'Usuario creado'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error al crear el usuario'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Error al crear el usuario'),
+          content: Text('Error al guardar el usuario'),
           backgroundColor: Colors.red,
         ),
       );
@@ -173,5 +181,6 @@ class _UsuarioFormState extends State<UsuarioForm> {
 
     context.read<UsuarioFormChangeNotifier>().resetUsuario();
     context.read<UsuarioFormChangeNotifier>().changeLoading(false);
+    setState(() {});
   }
 }
