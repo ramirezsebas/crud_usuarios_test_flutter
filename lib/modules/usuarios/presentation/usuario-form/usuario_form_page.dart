@@ -20,32 +20,34 @@ class _UsuarioFormPageState extends State<UsuarioFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Crear Usuario'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const UsuarioListPage(),
-              ),
-            );
-          },
-        ),
-      ),
-      body: Column(
-        children: [
-          const Text(
-            "Formulario",
-            style: TextStyle(
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-            ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Crear Usuario'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UsuarioListPage(),
+                ),
+              );
+            },
           ),
-          UsuarioForm(edit: widget.edit),
-        ],
+        ),
+        body: Column(
+          children: [
+            const Text(
+              "Formulario",
+              style: TextStyle(
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            UsuarioForm(edit: widget.edit),
+          ],
+        ),
       ),
     );
   }
