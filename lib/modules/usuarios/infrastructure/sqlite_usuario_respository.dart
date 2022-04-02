@@ -1,16 +1,25 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
-import 'package:test_itti_flutter/modules/usuarios/domain/usuario_repository.dart';
 
-class SqliteUsuarioRepository implements UsuarioRepository {
+class SqliteUsuarioRepository {
   final Database _database;
   final String _tableName = "usuarios";
 
   SqliteUsuarioRepository(this._database);
 
   Future<int> create(UsuarioEntity usuarioEntity) async {
+    int id = await _getLastInsertedElementId();
+    usuarioEntity.id = id + 1;
     Map<String, dynamic> usuarioJson = usuarioEntity.toJson();
+
     return _database.insert(_tableName, usuarioJson);
+  }
+
+  Future<int> _getLastInsertedElementId() async {
+    List<Map<String, Object?>> allId =
+        await _database.rawQuery('SELECT MAX(id) FROM $_tableName');
+    int id = allId.first['MAX(id)'] as int? ?? 0;
+    return id;
   }
 
   Future<int> update(UsuarioEntity usuarioEntity) async {
@@ -23,7 +32,6 @@ class SqliteUsuarioRepository implements UsuarioRepository {
     );
   }
 
-  @override
   Future<List<UsuarioEntity>> getAll() async {
     List<Map<String, Object?>> usuarios = await _database.query(_tableName);
     if (usuarios.isEmpty) {
@@ -33,7 +41,6 @@ class SqliteUsuarioRepository implements UsuarioRepository {
     return usuarios.map((usuario) => UsuarioEntity.fromJson(usuario)).toList();
   }
 
-  @override
   Future<UsuarioEntity?> getOne(String id) async {
     List<Map<String, Object?>> usuarios = await _database.query(_tableName,
         where: "id = ?", whereArgs: [id], limit: 1);
@@ -45,5 +52,10 @@ class SqliteUsuarioRepository implements UsuarioRepository {
     UsuarioEntity usuario = UsuarioEntity.fromJson(usuarios.first);
 
     return usuario;
+  }
+
+  @override
+  Future<void> delete(int id) {
+    return _database.delete(_tableName, where: "id = ?", whereArgs: [id]);
   }
 }
