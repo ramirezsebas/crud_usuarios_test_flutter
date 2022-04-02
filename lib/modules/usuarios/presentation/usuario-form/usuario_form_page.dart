@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:test_itti_flutter/modules/usuarios/infrastructure/sqlite_usuario_respository.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-form/widgets/usuario_form.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_page.dart';
+import 'package:test_itti_flutter/shared/widgets/custom_card.dart';
 
 class UsuarioFormPage extends StatefulWidget {
   const UsuarioFormPage({Key? key, required this.edit}) : super(key: key);
@@ -36,17 +37,22 @@ class _UsuarioFormPageState extends State<UsuarioFormPage> {
             },
           ),
         ),
-        body: Column(
-          children: [
-            const Text(
-              "Formulario",
-              style: TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.bold,
-              ),
+        body: CustomCard(
+          padding: 15,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text(
+                  "Crear Usuario",
+                  style: TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                UsuarioForm(edit: widget.edit),
+              ],
             ),
-            UsuarioForm(edit: widget.edit),
-          ],
+          ),
         ),
       ),
     );

@@ -27,6 +27,7 @@ class UsuarioFormChangeNotifier extends ChangeNotifier {
     nombre = "";
     selectedSexo = "Femenino";
     fechaNacimiento = DateTime.now();
+    notifyListeners();
   }
 
   void changeLoading(bool value) {

@@ -53,6 +53,7 @@ class _UsuarioFormState extends State<UsuarioForm> {
                     onChanged:
                         context.read<UsuarioFormChangeNotifier>().changeNombre,
                   ),
+                  const SizedBox(height: 10),
                   TextFormField(
                     readOnly: true,
                     controller: dateController,
@@ -66,22 +67,10 @@ class _UsuarioFormState extends State<UsuarioForm> {
                       return null;
                     },
                     onTap: () async {
-                      //Open DatePicker
-                      var fecha = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1700),
-                        lastDate: DateTime(2100),
-                      );
-
-                      if (fecha != null) {
-                        context
-                            .read<UsuarioFormChangeNotifier>()
-                            .changeFechaNacimiento(fecha);
-                        dateController.text = DateFormatUtils.formatDate(fecha);
-                      }
+                      await _changeDate(context);
                     },
                   ),
+                  const SizedBox(height: 10),
                   DropdownButtonFormField<String>(
                     value:
                         context.read<UsuarioFormChangeNotifier>().selectedSexo,
@@ -113,6 +102,7 @@ class _UsuarioFormState extends State<UsuarioForm> {
                     icon: const Icon(Icons.add),
                     label: const Text("Agregar"),
                   ),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -122,6 +112,22 @@ class _UsuarioFormState extends State<UsuarioForm> {
           const Center(child: CircularProgressIndicator())
       ],
     );
+  }
+
+  Future<void> _changeDate(BuildContext context) async {
+    var fecha = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1700),
+      lastDate: DateTime(2100),
+    );
+    
+    if (fecha != null) {
+      context
+          .read<UsuarioFormChangeNotifier>()
+          .changeFechaNacimiento(fecha);
+      dateController.text = DateFormatUtils.formatDate(fecha);
+    }
   }
 
   Future<void> _saveUsuario(BuildContext context) async {
