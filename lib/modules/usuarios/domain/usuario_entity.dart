@@ -1,11 +1,11 @@
 class UsuarioEntity {
-  int id;
+  int? id;
   String nombre;
   DateTime fechaNacimiento;
   String sexo;
 
   UsuarioEntity({
-    required this.id,
+    this.id,
     required this.nombre,
     required this.fechaNacimiento,
     required this.sexo,
@@ -45,7 +45,7 @@ class UsuarioEntity {
     return {
       'id': id,
       'nombre': nombre,
-      'fechaNacimiento': fechaNacimiento,
+      'fechaNacimiento': fechaNacimiento.toIso8601String(),
       'sexo': sexo,
     };
   }
