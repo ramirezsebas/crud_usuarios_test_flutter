@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:get_it/get_it.dart';
+
 import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
+import 'package:test_itti_flutter/modules/usuarios/domain/usuario_remote_entity.dart';
 import 'package:test_itti_flutter/modules/usuarios/infrastructure/dio_usuario_repository.dart';
 import 'package:test_itti_flutter/modules/usuarios/infrastructure/sqlite_usuario_respository.dart';
 

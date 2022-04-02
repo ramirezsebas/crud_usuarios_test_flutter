@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+
 import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
 
 class SqliteUsuarioRepository {
@@ -54,7 +55,6 @@ class SqliteUsuarioRepository {
     return usuario;
   }
 
-  @override
   Future<void> delete(int id) {
     return _database.delete(_tableName, where: "id = ?", whereArgs: [id]);
   }

@@ -1,6 +1,6 @@
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
+
+import 'package:test_itti_flutter/modules/usuarios/domain/usuario_remote_entity.dart';
 
 class DioUsuarioRepository {
   Dio dio;
