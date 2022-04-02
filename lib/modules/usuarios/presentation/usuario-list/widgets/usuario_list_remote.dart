@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'package:test_itti_flutter/modules/usuarios/domain/usuario_remote_entity.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_change_notifier.dart';
+import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_remote_card_body.dart';
+import 'package:test_itti_flutter/shared/widgets/custom_card.dart';
 
 class UsuarioListRemote extends StatefulWidget {
   const UsuarioListRemote({
@@ -68,12 +70,9 @@ class _UsuarioListRemoteState extends State<UsuarioListRemote>
           itemCount: allUsuarios.length,
           itemBuilder: (context, index) {
             UsuarioRemoteEntity usuario = allUsuarios[index];
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(usuario.avatar),
-              ),
-              title: Text(usuario.firstName + " " + usuario.lastName),
-              subtitle: Text(usuario.email),
+            return CustomCard(
+              child: UsuarioRemoteCardBody(usuario: usuario),
+              padding: 15,
             );
           },
         );
