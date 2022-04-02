@@ -1,31 +1,28 @@
+import 'dart:io';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class BaseSqliteRepository {
-  static final BaseSqliteRepository _instance =
-      BaseSqliteRepository._internal();
+  static final BaseSqliteRepository db = BaseSqliteRepository._();
 
-  factory BaseSqliteRepository() => _instance;
+  Database? _database;
 
-  BaseSqliteRepository._internal() {
-    _initDatabase();
-  }
+  BaseSqliteRepository._();
 
-  //Database object
-  late Database? _database;
-
-  //Getter for the database
-
-  Future<Database?> get database async {
-    if (_database != null) return _database;
+  Future<Database> get database async {
+    if (_database != null) return _database!;
     _database = await _initDatabase();
-    return _database;
+
+    return _database!;
   }
 
-  //Initialize the database
+  Database? get instance => _database;
+
   Future<Database> _initDatabase() async {
-    String databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'test_itti_flutter.db');
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, 'test_itti_flutter.db');
     print("DB path: $path");
     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return db;
@@ -34,7 +31,7 @@ class BaseSqliteRepository {
   //Create the table
   void _onCreate(Database db, int newVersion) async {
     await db.execute(
-      'CREATE TABLE usuarios(id TEXT PRIMARY KEY, nombre TEXT, fecha TEXT, sexo TEXT)',
+      'CREATE TABLE usuarios(id INTEGER PRIMARY KEY, nombre TEXT, fechaNacimiento TEXT, sexo TEXT)',
     );
   }
 }
