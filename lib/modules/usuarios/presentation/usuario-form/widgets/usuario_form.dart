@@ -179,7 +179,6 @@ class _UsuarioFormState extends State<UsuarioForm> {
       );
     }
 
-    context.read<UsuarioFormChangeNotifier>().resetUsuario();
     context.read<UsuarioFormChangeNotifier>().changeLoading(false);
     setState(() {});
   }

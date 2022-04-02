@@ -23,13 +23,6 @@ class UsuarioFormChangeNotifier extends ChangeNotifier {
     fechaNacimiento = usuarioEntity.fechaNacimiento;
   }
 
-  void resetUsuario() {
-    nombre = "";
-    selectedSexo = "Femenino";
-    fechaNacimiento = DateTime.now();
-    notifyListeners();
-  }
-
   void changeLoading(bool value) {
     loading = value;
     notifyListeners();
