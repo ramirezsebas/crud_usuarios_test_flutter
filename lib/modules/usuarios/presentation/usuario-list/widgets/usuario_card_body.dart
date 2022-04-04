@@ -77,23 +77,44 @@ class _UsuarioCardBodyState extends State<UsuarioCardBody> {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    var deleted = await context
-                        .read<UsuarioListChangeNotifier>()
-                        .delete(widget.usuario.id!);
-                    if (deleted < 0) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Error al eliminar el usuario'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Usuario eliminado'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
+                    final bool? delete = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Eliminar Usuario"),
+                        content: const Text(
+                            "¿Está seguro que desea eliminar el usuario?"),
+                        actions: [
+                          TextButton(
+                            child: const Text("Cancelar"),
+                            onPressed: () => Navigator.of(context).pop(false),
+                          ),
+                          TextButton(
+                            child: const Text("Eliminar"),
+                            onPressed: () => Navigator.of(context).pop(true),
+                          ),
+                        ],
+                      ),
+                    );
+
+                    if (delete == true) {
+                      var deleted = await context
+                          .read<UsuarioListChangeNotifier>()
+                          .delete(widget.usuario.id!);
+                      if (deleted < 0) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Error al eliminar el usuario'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Usuario eliminado'),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      }
                     }
                   },
                   style: ButtonStyle(

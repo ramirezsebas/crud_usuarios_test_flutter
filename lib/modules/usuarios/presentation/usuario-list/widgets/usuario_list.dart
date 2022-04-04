@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
+import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-form/usuario_form_page.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_change_notifier.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_card_body.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_list_header.dart';
@@ -40,7 +41,11 @@ class _UsuarioListState extends State<UsuarioList> {
       children: [
         Column(
           children: [
-            if (!widget.isRemote) const UsuarioListHeader(),
+            if (myUsuarios.isEmpty &&
+                !context.watch<UsuarioListChangeNotifier>().loading)
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.1,
+              ),
             if (myUsuarios.isEmpty &&
                 !context.watch<UsuarioListChangeNotifier>().loading)
               const NoData(label: "No Hay Usuarios"),
@@ -62,6 +67,48 @@ class _UsuarioListState extends State<UsuarioList> {
               ),
           ],
         ),
+        if (!widget.isRemote)
+          Positioned(
+            right: 0,
+            bottom: 10,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MaterialButton(
+                  height: 60,
+                  shape: const CircleBorder(),
+                  color: Colors.red,
+                  onPressed: () {
+                    context.read<UsuarioListChangeNotifier>().deleteAll();
+                  },
+                  child: const Icon(
+                    Icons.delete_forever_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+                MaterialButton(
+                  height: 60,
+                  elevation: 5.0,
+                  shape: const CircleBorder(),
+                  color: Colors.blue,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const UsuarioFormPage(
+                          edit: false,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Icon(
+                    Icons.add_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
         if (context.watch<UsuarioListChangeNotifier>().loading)
           const Center(
             child: CircularProgressIndicator(),

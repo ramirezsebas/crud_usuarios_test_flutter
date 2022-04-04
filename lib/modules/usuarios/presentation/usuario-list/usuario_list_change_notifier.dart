@@ -9,6 +9,7 @@ import 'package:test_itti_flutter/modules/usuarios/infrastructure/sqlite_usuario
 class UsuarioListChangeNotifier extends ChangeNotifier {
   List<UsuarioEntity> usuarios = [];
   bool loading = false;
+
   final SqliteUsuarioRepository usuarioSqliteRepository =
       GetIt.I<SqliteUsuarioRepository>();
   final DioUsuarioRepository usuarioDioRepository =
@@ -73,6 +74,15 @@ class UsuarioListChangeNotifier extends ChangeNotifier {
       usuarios.removeAt(index);
       var newUsuarios = [...usuarios];
       setUsuarios(newUsuarios);
+    }
+    return deleted;
+  }
+
+  Future<int> deleteAll() async {
+    var deleted = await usuarioSqliteRepository.deleteAll();
+    if (deleted > 0) {
+      usuarios = [];
+      setUsuarios([]);
     }
     return deleted;
   }

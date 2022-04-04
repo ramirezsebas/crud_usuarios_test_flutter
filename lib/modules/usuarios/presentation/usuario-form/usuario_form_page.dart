@@ -46,22 +46,30 @@ class _UsuarioFormPageState extends State<UsuarioFormPage> {
             },
           ),
         ),
-        body: CustomCard(
-          padding: 15,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  widget.edit ? "Modificar Usuario" : "Crear Usuario",
-                  style: const TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                UsuarioForm(edit: widget.edit),
-              ],
+        body: Column(
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
+            CustomCard(
+              padding: 20,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      widget.edit ? "Modificar Usuario" : "Crear Usuario",
+                      style: const TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    UsuarioForm(edit: widget.edit),
+                  ],
+                ),
+              ),
+            ),
+            const Spacer()
+          ],
         ),
       ),
     );

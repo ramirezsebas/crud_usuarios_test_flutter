@@ -84,22 +84,36 @@ class _UsuarioFormState extends State<UsuarioForm> {
                     height: 20,
                   ),
                   ElevatedButton.icon(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        try {
-                          await _saveUsuario(context);
-                        } catch (e) {
-                          print(e);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Error al guardar el usuario'),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
-                      }
-                    },
-                    icon: const Icon(Icons.add),
+                    onPressed:
+                        context.watch<UsuarioFormChangeNotifier>().deactivate
+                            ? null
+                            : () async {
+                                if (_formKey.currentState!.validate()) {
+                                  context
+                                      .read<UsuarioFormChangeNotifier>()
+                                      .setDeactivate(true);
+                                  try {
+                                    await _saveUsuario(context);
+                                    Future.delayed(Duration(seconds: 3), () {
+                                      context
+                                          .read<UsuarioFormChangeNotifier>()
+                                          .setDeactivate(false);
+                                    });
+                                  } catch (e) {
+                                    print(e);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content:
+                                            Text('Error al guardar el usuario'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                    icon: Icon(!widget.edit
+                        ? Icons.add_outlined
+                        : Icons.edit_outlined),
                     label: Text(widget.edit ? "Modificar" : "Agregar"),
                   ),
                   const SizedBox(height: 10),
