@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
 
+import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_change_notifier.dart';
-import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_list_header.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_card_body.dart';
+import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_list_header.dart';
 import 'package:test_itti_flutter/shared/widgets/custom_card.dart';
 import 'package:test_itti_flutter/shared/widgets/no_data.dart';
 
@@ -26,13 +26,11 @@ class _UsuarioListState extends State<UsuarioList> {
   }
 
   void _loadUsuarios() {
-    // context.read<UsuarioListChangeNotifier>().setLoading(true);
     if (widget.isRemote) {
       context.read<UsuarioListChangeNotifier>().getAllUsuariosRemote();
     } else {
       context.read<UsuarioListChangeNotifier>().getAllUsuariosLocal();
     }
-    // context.read<UsuarioListChangeNotifier>().setLoading(false);
   }
 
   @override
