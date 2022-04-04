@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 
 import 'package:test_itti_flutter/modules/usuarios/infrastructure/sqlite_usuario_respository.dart';
+import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-form/usuario_form_change_notifier.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-form/widgets/usuario_form.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_page.dart';
 import 'package:test_itti_flutter/shared/widgets/custom_card.dart';
@@ -20,11 +22,19 @@ class _UsuarioFormPageState extends State<UsuarioFormPage> {
       GetIt.I<SqliteUsuarioRepository>();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (!widget.edit) {
+      context.read<UsuarioFormChangeNotifier>().clear();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Crear Usuario'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -42,9 +52,9 @@ class _UsuarioFormPageState extends State<UsuarioFormPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Text(
-                  "Crear Usuario",
-                  style: TextStyle(
+                Text(
+                  widget.edit ? "Modificar Usuario" : "Crear Usuario",
+                  style: const TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
                   ),

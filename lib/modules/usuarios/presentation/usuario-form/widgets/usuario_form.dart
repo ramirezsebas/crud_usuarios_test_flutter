@@ -100,7 +100,7 @@ class _UsuarioFormState extends State<UsuarioForm> {
                       }
                     },
                     icon: const Icon(Icons.add),
-                    label: const Text("Agregar"),
+                    label: Text(widget.edit ? "Modificar" : "Agregar"),
                   ),
                   const SizedBox(height: 10),
                 ],
@@ -117,9 +117,9 @@ class _UsuarioFormState extends State<UsuarioForm> {
   Future<void> _changeDate(BuildContext context) async {
     var fecha = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateTime(DateTime.now().year - 15),
       firstDate: DateTime(1700),
-      lastDate: DateTime(2100),
+      lastDate: DateTime(DateTime.now().year - 15),
     );
 
     if (fecha != null) {

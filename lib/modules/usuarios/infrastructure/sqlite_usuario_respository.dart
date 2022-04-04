@@ -57,7 +57,7 @@ class SqliteUsuarioRepository {
     return usuario;
   }
 
-  Future<void> delete(int id) {
+  Future<int> delete(int id) {
     return _database.delete(_tableName, where: "id = ?", whereArgs: [id]);
   }
 }

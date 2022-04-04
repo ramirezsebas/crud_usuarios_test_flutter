@@ -18,81 +18,56 @@ class UsuarioList extends StatefulWidget {
   State<UsuarioList> createState() => _UsuarioListState();
 }
 
-class _UsuarioListState extends State<UsuarioList>
-    with AutomaticKeepAliveClientMixin {
+class _UsuarioListState extends State<UsuarioList> {
   @override
-  bool get wantKeepAlive => true;
+  void initState() {
+    super.initState();
+    _loadUsuarios();
+  }
+
+  void _loadUsuarios() {
+    // context.read<UsuarioListChangeNotifier>().setLoading(true);
+    if (widget.isRemote) {
+      context.read<UsuarioListChangeNotifier>().getAllUsuariosRemote();
+    } else {
+      context.read<UsuarioListChangeNotifier>().getAllUsuariosLocal();
+    }
+    // context.read<UsuarioListChangeNotifier>().setLoading(false);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    var myUsuarios = context.watch<UsuarioListChangeNotifier>().usuarios;
+    return Stack(
       children: [
-        if (!widget.isRemote) const UsuarioListHeader(),
-        Expanded(
-          child: FutureBuilder<List<UsuarioEntity>>(
-            future: widget.isRemote
-                ? context
-                    .read<UsuarioListChangeNotifier>()
-                    .getAllUsuariosRemote()
-                : context
-                    .read<UsuarioListChangeNotifier>()
-                    .getAllUsuariosLocal(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              if (!snapshot.hasData) {
-                return const NoData(
-                  label: "No hay Usuarios",
-                );
-              }
-              var allUsuarios = snapshot.data as List<UsuarioEntity>;
-
-              if (allUsuarios == null) {
-                return const NoData(
-                  label: "No hay Usuarios",
-                );
-              }
-
-              if (allUsuarios.isEmpty) {
-                return const NoData(
-                  label: "No hay Usuarios",
-                );
-              }
-              if (!widget.isRemote) {
-                var usus = context.read<UsuarioListChangeNotifier>().usuarios;
-                if (usus.isEmpty) {
-                  return const NoData(
-                    label: "No hay Usuarios",
-                  );
-                }
-              }
-
-              return ListView.builder(
-                itemCount: !widget.isRemote
-                    ? context.watch<UsuarioListChangeNotifier>().usuarios.length
-                    : allUsuarios.length,
-                itemBuilder: (context, index) {
-                  UsuarioEntity usuario = !widget.isRemote
-                      ? context
-                          .watch<UsuarioListChangeNotifier>()
-                          .usuarios[index]
-                      : allUsuarios[index];
-                  return CustomCard(
-                    child: UsuarioCardBody(
-                      usuario: usuario,
-                      isRemote: widget.isRemote,
-                    ),
-                    padding: 15,
-                  );
-                },
-              );
-            },
-          ),
+        Column(
+          children: [
+            if (!widget.isRemote) const UsuarioListHeader(),
+            if (myUsuarios.isEmpty &&
+                !context.watch<UsuarioListChangeNotifier>().loading)
+              const NoData(label: "No Hay Usuarios"),
+            if (myUsuarios.isNotEmpty)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: myUsuarios.length,
+                  itemBuilder: (context, index) {
+                    UsuarioEntity usuario = myUsuarios[index];
+                    return CustomCard(
+                      child: UsuarioCardBody(
+                        usuario: usuario,
+                        isRemote: widget.isRemote,
+                      ),
+                      padding: 15,
+                    );
+                  },
+                ),
+              ),
+          ],
         ),
+        if (context.watch<UsuarioListChangeNotifier>().loading)
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
       ],
     );
   }

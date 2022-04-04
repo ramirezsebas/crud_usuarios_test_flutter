@@ -8,12 +8,18 @@ import 'package:test_itti_flutter/modules/usuarios/infrastructure/sqlite_usuario
 
 class UsuarioListChangeNotifier extends ChangeNotifier {
   List<UsuarioEntity> usuarios = [];
+  bool loading = false;
   final SqliteUsuarioRepository usuarioSqliteRepository =
       GetIt.I<SqliteUsuarioRepository>();
   final DioUsuarioRepository usuarioDioRepository =
       GetIt.I<DioUsuarioRepository>();
 
   UsuarioListChangeNotifier();
+
+  setLoading(bool value) {
+    loading = value;
+    notifyListeners();
+  }
 
   void setUsuarios(List<UsuarioEntity> usuarioss) {
     usuarios = usuarioss;
@@ -38,25 +44,36 @@ class UsuarioListChangeNotifier extends ChangeNotifier {
   }
 
   Future<List<UsuarioEntity>> getAllUsuariosLocal() async {
-    return usuarioSqliteRepository.getAll();
+    loading = true;
+    usuarios = [];
+    var localUsuarios = await usuarioSqliteRepository.getAll();
+    setUsuarios(localUsuarios);
+    loading = false;
+    return localUsuarios;
   }
 
   Future<List<UsuarioEntity>> getAllUsuariosRemote() async {
-    return usuarioDioRepository.getAll();
+    loading = true;
+    usuarios = [];
+    var remoteUsuarios = await usuarioDioRepository.getAll();
+    setUsuarios(remoteUsuarios);
+    loading = false;
+    return remoteUsuarios;
   }
 
   Future<UsuarioEntity?> getOneUsuario(String id) async {
-    return usuarioSqliteRepository.getOne(id);
+    var usuario = await usuarioSqliteRepository.getOne(id);
+    return usuario;
   }
 
-  Future<void> delete(int id) async {
-    await usuarioSqliteRepository.delete(id);
-
-    usuarios.removeWhere((u) => u.id == id);
-
-    var newUsuarios = [...usuarios];
-    setUsuarios(newUsuarios);
-
-    return usuarioSqliteRepository.delete(id);
+  Future<int> delete(int id) async {
+    var deleted = await usuarioSqliteRepository.delete(id);
+    if (deleted > 0) {
+      var index = usuarios.indexWhere((u) => u.id == id);
+      usuarios.removeAt(index);
+      var newUsuarios = [...usuarios];
+      setUsuarios(newUsuarios);
+    }
+    return deleted;
   }
 }

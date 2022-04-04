@@ -75,10 +75,25 @@ class _UsuarioCardBodyState extends State<UsuarioCardBody> {
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    context
+                  onPressed: () async {
+                    var deleted = await context
                         .read<UsuarioListChangeNotifier>()
                         .delete(widget.usuario.id!);
+                    if (deleted < 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Error al eliminar el usuario'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Usuario eliminado'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    }
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.red),
