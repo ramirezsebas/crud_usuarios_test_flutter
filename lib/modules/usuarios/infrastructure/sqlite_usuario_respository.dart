@@ -11,7 +11,7 @@ class SqliteUsuarioRepository {
   Future<int> create(UsuarioEntity usuarioEntity) async {
     int id = await _getLastInsertedElementId();
     usuarioEntity.id = id + 1;
-    Map<String, dynamic> usuarioJson = usuarioEntity.toJson();
+    Map<String, dynamic> usuarioJson = usuarioEntity.toLocalJson();
 
     return _database.insert(_tableName, usuarioJson);
   }
@@ -24,7 +24,7 @@ class SqliteUsuarioRepository {
   }
 
   Future<int> update(UsuarioEntity usuarioEntity) async {
-    Map<String, dynamic> usuarioJson = usuarioEntity.toJson();
+    Map<String, dynamic> usuarioJson = usuarioEntity.toLocalJson();
     return _database.update(
       _tableName,
       usuarioJson,
@@ -39,7 +39,9 @@ class SqliteUsuarioRepository {
       return [];
     }
 
-    return usuarios.map((usuario) => UsuarioEntity.fromJson(usuario)).toList();
+    return usuarios
+        .map((usuario) => UsuarioEntity.fromLocalJson(usuario))
+        .toList();
   }
 
   Future<UsuarioEntity?> getOne(String id) async {
@@ -50,7 +52,7 @@ class SqliteUsuarioRepository {
       return null;
     }
 
-    UsuarioEntity usuario = UsuarioEntity.fromJson(usuarios.first);
+    UsuarioEntity usuario = UsuarioEntity.fromLocalJson(usuarios.first);
 
     return usuario;
   }

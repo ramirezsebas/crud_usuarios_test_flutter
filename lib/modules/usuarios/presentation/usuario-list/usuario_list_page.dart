@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_list.dart';
 
-import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_list_local.dart';
-import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_list_remote.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_tab_view.dart';
 
 class UsuarioListPage extends StatelessWidget {
@@ -26,8 +25,12 @@ class UsuarioListPage extends StatelessWidget {
               Expanded(
                 child: TabBarView(
                   children: [
-                    UsuarioListLocal(),
-                    UsuarioListRemote(),
+                    UsuarioList(
+                      isRemote: false,
+                    ),
+                    UsuarioList(
+                      isRemote: true,
+                    ),
                   ],
                 ),
               ),

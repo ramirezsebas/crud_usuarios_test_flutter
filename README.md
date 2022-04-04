@@ -1,16 +1,17 @@
-# test_itti_flutter
+# Test de valoración de ITTI (Flutter)
 
-A new Flutter project.
+## Crud de Usuarios en base de datos internas (SQLite)
 
-## Getting Started
+Campos:
 
-This project is a starting point for a Flutter application.
+- id, tipo: numerico
+- nombre, tipo: string
+- fecha_nacimiento, tipo: date
+- sexo (Información cargada de forma estatica), tipo: string(1)
 
-A few resources to get you started if this is your first Flutter project:
+Obs.: La lista de opciones tiene que ser agregada como un widget
+al formulario
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Crear otra vista donde se muestre la información obtenida del siguiente servicio <https://reqres.in/api/users> en Widgets del tipo Card
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Tiempo estimado: 3 horas

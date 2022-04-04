@@ -180,6 +180,5 @@ class _UsuarioFormState extends State<UsuarioForm> {
     }
     context.read<UsuarioFormChangeNotifier>().changeNombre("");
     context.read<UsuarioFormChangeNotifier>().changeLoading(false);
-    setState(() {});
   }
 }

@@ -18,9 +18,10 @@ class UsuarioFormChangeNotifier extends ChangeNotifier {
     id = usuarioEntity.id ?? 1;
     nombre = usuarioEntity.nombre;
     selectedSexo = sexos
-        .where((String element) => element.startsWith(usuarioEntity.sexo))
+        .where(
+            (String element) => element.startsWith(usuarioEntity.sexo ?? "F"))
         .first;
-    fechaNacimiento = usuarioEntity.fechaNacimiento;
+    fechaNacimiento = usuarioEntity.fechaNacimiento ?? DateTime.now();
   }
 
   void changeLoading(bool value) {

@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
+import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-form/usuario_form_change_notifier.dart';
+import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-form/usuario_form_page.dart';
+import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_change_notifier.dart';
+import 'package:test_itti_flutter/shared/utils/date_format_utils.dart';
+
+class UsuarioCardBody extends StatefulWidget {
+  const UsuarioCardBody(
+      {Key? key, required this.usuario, required this.isRemote})
+      : super(key: key);
+
+  final UsuarioEntity usuario;
+  final bool isRemote;
+
+  @override
+  State<UsuarioCardBody> createState() => _UsuarioCardBodyState();
+}
+
+class _UsuarioCardBodyState extends State<UsuarioCardBody> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            widget.usuario.avatar != null
+                ? CircleAvatar(
+                    backgroundImage: NetworkImage(widget.usuario.avatar!),
+                  )
+                : const CircleAvatar(
+                    child: Icon(Icons.person),
+                  ),
+            const SizedBox(width: 10),
+            const Expanded(
+              child: Text(
+                "Software Developer",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const Divider(),
+        TextWrap(label: "Nombre", value: widget.usuario.nombre),
+        const SizedBox(height: 10),
+        if (widget.usuario.fechaNacimiento != null)
+          TextWrap(
+            label: "Fecha de Nacimiento",
+            value: DateFormatUtils.formatDate(widget.usuario.fechaNacimiento!),
+          ),
+        const SizedBox(height: 10),
+        if (widget.usuario.sexo != null)
+          TextWrap(
+            label: "Sexo",
+            value: widget.usuario.sexo!.toUpperCase() == "F"
+                ? "Femenino"
+                : "Masculino",
+          ),
+        const SizedBox(height: 10),
+        if (widget.usuario.email != null)
+          TextWrap(
+            label: "Email",
+            value: widget.usuario.email!,
+          ),
+        const SizedBox(height: 10),
+        if (!widget.isRemote)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    context
+                        .read<UsuarioListChangeNotifier>()
+                        .delete(widget.usuario.id!);
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                  ),
+                  icon: const Icon(Icons.delete),
+                  label: const Text("Eliminar"),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        context
+                            .read<UsuarioFormChangeNotifier>()
+                            .initUsuario(widget.usuario);
+
+                        return const UsuarioFormPage(
+                          edit: true,
+                        );
+                      }),
+                    );
+                    setState(() {});
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.green),
+                  ),
+                  icon: const Icon(Icons.update),
+                  label: const Text("Actualizar"),
+                ),
+              ),
+            ],
+          )
+      ],
+    );
+  }
+}
+
+class TextWrap extends StatelessWidget {
+  const TextWrap({
+    Key? key,
+    required this.label,
+    required this.value,
+  }) : super(key: key);
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      alignment: WrapAlignment.start,
+      children: [
+        Text("$label: " + value),
+      ],
+    );
+  }
+}
