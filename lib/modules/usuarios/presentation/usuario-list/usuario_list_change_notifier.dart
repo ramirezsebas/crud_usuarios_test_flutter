@@ -11,7 +11,9 @@ import 'package:test_itti_flutter/modules/usuarios/infrastructure/sqlite_usuario
 
 class UsuarioListChangeNotifier extends ChangeNotifier {
   List<UsuarioEntity> usuarios = [];
+  List<UsuarioEntity> usuariosRemote = [];
   bool loading = false;
+  int tabIndex = 0;
 
   final SqliteUsuarioRepository usuarioSqliteRepository =
       GetIt.I<SqliteUsuarioRepository>();
@@ -25,8 +27,18 @@ class UsuarioListChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setTabIndex(int value) {
+    tabIndex = value;
+    notifyListeners();
+  }
+
   void setUsuarios(List<UsuarioEntity> usuarioss) {
     usuarios = usuarioss;
+    notifyListeners();
+  }
+
+  void setUsuariosRemote(List<UsuarioEntity> usuarioss) {
+    usuariosRemote = usuarioss;
     notifyListeners();
   }
 
@@ -58,50 +70,11 @@ class UsuarioListChangeNotifier extends ChangeNotifier {
 
   Future<List<UsuarioEntity>> getAllUsuariosRemote() async {
     loading = true;
-    usuarios = [];
+    usuariosRemote = [];
     var remoteUsuarios = await usuarioDioRepository.getAll();
-    setUsuarios(remoteUsuarios);
+    setUsuariosRemote(remoteUsuarios);
     loading = false;
     return remoteUsuarios;
-  }
-
-  Future<List<UsuarioEntity>> getAllUsuariosRemoteOrCached() async {
-    loading = true;
-    usuarios = [];
-    var hasCachedUsuario = GetStorage().hasData('usuarios');
-    if (!hasCachedUsuario) {
-      var remoteUsuarios = await usuarioDioRepository.getAll();
-      GetStorage().write('time', DateTime.now().toString());
-      GetStorage().write('usuarios',
-          jsonEncode(remoteUsuarios.map((u) => u.toLocalJson()).toList()));
-      setUsuarios(remoteUsuarios);
-      loading = false;
-      return remoteUsuarios;
-    }
-
-    var now = DateTime.now();
-
-    var time = DateTime.parse(await GetStorage().read('time'));
-
-    var diff = now.difference(time);
-
-    if (diff.inMinutes > 5) {
-      var remoteUsuarios = await usuarioDioRepository.getAll();
-      GetStorage().write('time', DateTime.now().toString());
-      GetStorage().write('usuarios',
-          jsonEncode(remoteUsuarios.map((u) => u.toLocalJson()).toList()));
-      setUsuarios(remoteUsuarios);
-      loading = false;
-      return remoteUsuarios;
-    } else {
-      var cachedUsuarios = jsonDecode(await GetStorage().read('usuarios'));
-      List<UsuarioEntity> remoteUsuarios = List.from(
-          cachedUsuarios.map((u) => UsuarioEntity.fromLocalJson(u)).toList());
-
-      setUsuarios(remoteUsuarios);
-      loading = false;
-      return remoteUsuarios;
-    }
   }
 
   Future<UsuarioEntity?> getOneUsuario(String id) async {
@@ -110,6 +83,9 @@ class UsuarioListChangeNotifier extends ChangeNotifier {
   }
 
   Future<int> delete(int id) async {
+    if (usuarios.isEmpty) {
+      return 0;
+    }
     var deleted = await usuarioSqliteRepository.delete(id);
     if (deleted > 0) {
       var index = usuarios.indexWhere((u) => u.id == id);
@@ -121,6 +97,9 @@ class UsuarioListChangeNotifier extends ChangeNotifier {
   }
 
   Future<int> deleteAll() async {
+    if (usuarios.isEmpty) {
+      return 0;
+    }
     var deleted = await usuarioSqliteRepository.deleteAll();
     if (deleted > 0) {
       usuarios = [];

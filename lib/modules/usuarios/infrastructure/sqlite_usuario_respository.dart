@@ -12,6 +12,7 @@ class SqliteUsuarioRepository {
     int id = await _getLastInsertedElementId();
     usuarioEntity.id = id + 1;
     Map<String, dynamic> usuarioJson = usuarioEntity.toLocalJson();
+    
 
     return _database.insert(_tableName, usuarioJson);
   }

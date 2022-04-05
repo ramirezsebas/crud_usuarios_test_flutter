@@ -64,7 +64,6 @@ class UsuarioEntity {
       'id': id,
       'nombre': nombre,
       'fechaNacimiento': fechaNacimiento?.toIso8601String(),
-      'email': email,
       'sexo': sexo,
     };
   }
