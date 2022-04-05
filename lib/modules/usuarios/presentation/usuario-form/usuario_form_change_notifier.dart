@@ -11,7 +11,6 @@ class UsuarioFormChangeNotifier extends ChangeNotifier {
   DateTime fechaNacimiento = DateTime.now();
 
   bool loading = false;
-  bool deactivate = false;
 
   UsuarioFormChangeNotifier();
 
@@ -23,11 +22,6 @@ class UsuarioFormChangeNotifier extends ChangeNotifier {
             (String element) => element.startsWith(usuarioEntity.sexo ?? "F"))
         .first;
     fechaNacimiento = usuarioEntity.fechaNacimiento ?? DateTime.now();
-  }
-
-  void setDeactivate(bool value) {
-    deactivate = value;
-    notifyListeners();
   }
 
   void clear() {

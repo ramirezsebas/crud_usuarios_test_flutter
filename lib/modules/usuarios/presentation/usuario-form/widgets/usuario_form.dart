@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-form/usuario_form_change_notifier.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_change_notifier.dart';
+import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_page.dart';
+import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_list.dart';
 import 'package:test_itti_flutter/shared/utils/date_format_utils.dart';
 
 class UsuarioForm extends StatefulWidget {
@@ -84,33 +86,21 @@ class _UsuarioFormState extends State<UsuarioForm> {
                     height: 20,
                   ),
                   ElevatedButton.icon(
-                    onPressed:
-                        context.watch<UsuarioFormChangeNotifier>().deactivate
-                            ? null
-                            : () async {
-                                if (_formKey.currentState!.validate()) {
-                                  context
-                                      .read<UsuarioFormChangeNotifier>()
-                                      .setDeactivate(true);
-                                  try {
-                                    await _saveUsuario(context);
-                                    Future.delayed(Duration(seconds: 3), () {
-                                      context
-                                          .read<UsuarioFormChangeNotifier>()
-                                          .setDeactivate(false);
-                                    });
-                                  } catch (e) {
-                                    print(e);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content:
-                                            Text('Error al guardar el usuario'),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  }
-                                }
-                              },
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        try {
+                          await _saveUsuario(context);
+                        } catch (e) {
+                          print(e);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Error al guardar el usuario'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      }
+                    },
                     icon: Icon(!widget.edit
                         ? Icons.add_outlined
                         : Icons.edit_outlined),
@@ -183,6 +173,11 @@ class _UsuarioFormState extends State<UsuarioForm> {
           ),
         );
       }
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const UsuarioListPage(),
+        ),
+      );
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(

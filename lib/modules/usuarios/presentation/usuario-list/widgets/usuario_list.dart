@@ -71,40 +71,47 @@ class _UsuarioListState extends State<UsuarioList> {
           Positioned(
             right: 0,
             bottom: 10,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            child: Column(
               children: [
-                MaterialButton(
+                const SizedBox(
                   height: 60,
-                  shape: const CircleBorder(),
-                  color: Colors.red,
-                  onPressed: () {
-                    context.read<UsuarioListChangeNotifier>().deleteAll();
-                  },
-                  child: const Icon(
-                    Icons.delete_forever_outlined,
-                    color: Colors.white,
-                  ),
                 ),
-                MaterialButton(
-                  height: 60,
-                  elevation: 5.0,
-                  shape: const CircleBorder(),
-                  color: Colors.blue,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const UsuarioFormPage(
-                          edit: false,
-                        ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    MaterialButton(
+                      height: 60,
+                      shape: const CircleBorder(),
+                      color: Colors.red,
+                      onPressed: () {
+                        context.read<UsuarioListChangeNotifier>().deleteAll();
+                      },
+                      child: const Icon(
+                        Icons.delete_forever_outlined,
+                        color: Colors.white,
                       ),
-                    );
-                  },
-                  child: const Icon(
-                    Icons.add_outlined,
-                    color: Colors.white,
-                  ),
+                    ),
+                    MaterialButton(
+                      height: 60,
+                      elevation: 5.0,
+                      shape: const CircleBorder(),
+                      color: Colors.blue,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const UsuarioFormPage(
+                              edit: false,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Icon(
+                        Icons.add_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

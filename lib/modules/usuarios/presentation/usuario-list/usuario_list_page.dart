@@ -15,6 +15,7 @@ class UsuarioListPage extends StatelessWidget {
       initialIndex: 0,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             elevation: 0,
             title: const Text('Usuarios'),
