@@ -9,6 +9,7 @@ Campos:
 
 Obs:
 - flutter 2.10.2
+- Manejo de Estado con Provider
 
 Anexos:
 
