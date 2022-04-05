@@ -27,7 +27,7 @@ class _UsuarioListState extends State<UsuarioList> {
 
   void _loadUsuarios() {
     if (widget.isRemote) {
-      context.read<UsuarioListChangeNotifier>().getAllUsuariosRemote();
+      context.read<UsuarioListChangeNotifier>().getAllUsuariosRemoteOrCached();
     } else {
       context.read<UsuarioListChangeNotifier>().getAllUsuariosLocal();
     }

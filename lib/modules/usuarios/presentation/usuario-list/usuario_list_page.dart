@@ -23,16 +23,23 @@ class UsuarioListPage extends StatelessWidget {
             centerTitle: true,
           ),
           body: Column(
-            children: const [
-              UsuarioTabView(),
+            children: [
+              const UsuarioTabView(),
               Expanded(
                 child: TabBarView(
                   children: [
-                    UsuarioList(
+                    const UsuarioList(
                       isRemote: false,
                     ),
-                    UsuarioList(
-                      isRemote: true,
+                    RefreshIndicator(
+                      onRefresh: () {
+                        return context
+                            .read<UsuarioListChangeNotifier>()
+                            .getAllUsuariosRemote();
+                      },
+                      child: const UsuarioList(
+                        isRemote: true,
+                      ),
                     ),
                   ],
                 ),

@@ -59,12 +59,21 @@ class UsuarioListChangeNotifier extends ChangeNotifier {
   Future<List<UsuarioEntity>> getAllUsuariosRemote() async {
     loading = true;
     usuarios = [];
+    var remoteUsuarios = await usuarioDioRepository.getAll();
+    setUsuarios(remoteUsuarios);
+    loading = false;
+    return remoteUsuarios;
+  }
+
+  Future<List<UsuarioEntity>> getAllUsuariosRemoteOrCached() async {
+    loading = true;
+    usuarios = [];
     var hasCachedUsuario = GetStorage().hasData('usuarios');
     if (!hasCachedUsuario) {
       var remoteUsuarios = await usuarioDioRepository.getAll();
       GetStorage().write('time', DateTime.now().toString());
       GetStorage().write('usuarios',
-          jsonEncode(remoteUsuarios.map((u) => u.toRemoteJson()).toList()));
+          jsonEncode(remoteUsuarios.map((u) => u.toLocalJson()).toList()));
       setUsuarios(remoteUsuarios);
       loading = false;
       return remoteUsuarios;
@@ -80,14 +89,14 @@ class UsuarioListChangeNotifier extends ChangeNotifier {
       var remoteUsuarios = await usuarioDioRepository.getAll();
       GetStorage().write('time', DateTime.now().toString());
       GetStorage().write('usuarios',
-          jsonEncode(remoteUsuarios.map((u) => u.toRemoteJson()).toList()));
+          jsonEncode(remoteUsuarios.map((u) => u.toLocalJson()).toList()));
       setUsuarios(remoteUsuarios);
       loading = false;
       return remoteUsuarios;
     } else {
       var cachedUsuarios = jsonDecode(await GetStorage().read('usuarios'));
       List<UsuarioEntity> remoteUsuarios = List.from(
-          cachedUsuarios.map((u) => UsuarioEntity.fromRemoteJson(u)).toList());
+          cachedUsuarios.map((u) => UsuarioEntity.fromLocalJson(u)).toList());
 
       setUsuarios(remoteUsuarios);
       loading = false;
