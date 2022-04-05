@@ -10,6 +10,10 @@ Campos:
 Obs:
 - flutter 2.10.2
 - Manejo de Estado con Provider
+- Utilizacion de una arquitectura tipo DDD(Domain Driven Design) en la que se separa por modulos y cada modulo cuenta con:
+  * Presentacion: Vistas y Estados (ChangeNotifierProvider).
+  * Domain: Dominio del modulo, podria ser entidades, repositorio abstractas, etc
+  * Infrastructure: Refiere a proveedores de informacion de terceros (API, BD Local, etc)
 
 Anexos:
 
