@@ -20,14 +20,6 @@ class UsuarioEntity {
       throw Exception('El json no contiene la llave id');
     }
 
-    if (!json.containsKey('first_name')) {
-      throw Exception('El json no contiene la llave first_name');
-    }
-
-    if (!json.containsKey('last_name')) {
-      throw Exception('El json no contiene la llave last_name');
-    }
-
     if (!json.containsKey('avatar')) {
       throw Exception('El json no contiene la llave avatar');
     }
@@ -38,7 +30,7 @@ class UsuarioEntity {
 
     return UsuarioEntity(
       id: json['id'],
-      nombre: json['first_name'] + json['last_name'],
+      nombre: (json['first_name'] +" "+ json['last_name']) ?? json['nombre'],
       email: json['email'],
       avatar: json['avatar'],
     );
@@ -84,10 +76,15 @@ class UsuarioEntity {
   }
 
   Map<String, dynamic> toRemoteJson() {
+    var myCapitalIndex = nombre.lastIndexOf(RegExp(r'[A-Z]'));
+    var myCapital = nombre[myCapitalIndex];
+    var replaced =
+        nombre.replaceRange(myCapitalIndex, myCapitalIndex, " $myCapital");
+
     return {
       'id': id,
-      'first_name': nombre.split(' ')[0],
-      'last_name': nombre.split(' ')[1],
+      'first_name': replaced.split(' ')[0],
+      'last_name': replaced.split(' ')[1],
       'avatar': avatar,
       'email': email,
     };

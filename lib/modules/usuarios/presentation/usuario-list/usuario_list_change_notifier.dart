@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
 import 'package:test_itti_flutter/modules/usuarios/infrastructure/dio_usuario_repository.dart';
@@ -56,10 +59,40 @@ class UsuarioListChangeNotifier extends ChangeNotifier {
   Future<List<UsuarioEntity>> getAllUsuariosRemote() async {
     loading = true;
     usuarios = [];
-    var remoteUsuarios = await usuarioDioRepository.getAll();
-    setUsuarios(remoteUsuarios);
-    loading = false;
-    return remoteUsuarios;
+    var hasCachedUsuario = GetStorage().hasData('usuarios');
+    if (!hasCachedUsuario) {
+      var remoteUsuarios = await usuarioDioRepository.getAll();
+      GetStorage().write('time', DateTime.now().toString());
+      GetStorage().write('usuarios',
+          jsonEncode(remoteUsuarios.map((u) => u.toRemoteJson()).toList()));
+      setUsuarios(remoteUsuarios);
+      loading = false;
+      return remoteUsuarios;
+    }
+
+    var now = DateTime.now();
+
+    var time = DateTime.parse(await GetStorage().read('time'));
+
+    var diff = now.difference(time);
+
+    if (diff.inMinutes > 5) {
+      var remoteUsuarios = await usuarioDioRepository.getAll();
+      GetStorage().write('time', DateTime.now().toString());
+      GetStorage().write('usuarios',
+          jsonEncode(remoteUsuarios.map((u) => u.toRemoteJson()).toList()));
+      setUsuarios(remoteUsuarios);
+      loading = false;
+      return remoteUsuarios;
+    } else {
+      var cachedUsuarios = jsonDecode(await GetStorage().read('usuarios'));
+      List<UsuarioEntity> remoteUsuarios = List.from(
+          cachedUsuarios.map((u) => UsuarioEntity.fromRemoteJson(u)).toList());
+
+      setUsuarios(remoteUsuarios);
+      loading = false;
+      return remoteUsuarios;
+    }
   }
 
   Future<UsuarioEntity?> getOneUsuario(String id) async {

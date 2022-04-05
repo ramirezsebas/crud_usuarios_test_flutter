@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ import 'package:test_itti_flutter/shared/infrastructure/get_it_di.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
 
   setup();
 

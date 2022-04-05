@@ -6,7 +6,6 @@ import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-form/usuario_form_page.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_change_notifier.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_card_body.dart';
-import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_list_header.dart';
 import 'package:test_itti_flutter/shared/widgets/custom_card.dart';
 import 'package:test_itti_flutter/shared/widgets/no_data.dart';
 
