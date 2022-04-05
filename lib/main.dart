@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-form/usuario_form_change_notifier.dart';

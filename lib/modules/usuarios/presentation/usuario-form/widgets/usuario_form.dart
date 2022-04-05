@@ -6,7 +6,6 @@ import 'package:test_itti_flutter/modules/usuarios/domain/usuario_entity.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-form/usuario_form_change_notifier.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_change_notifier.dart';
 import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/usuario_list_page.dart';
-import 'package:test_itti_flutter/modules/usuarios/presentation/usuario-list/widgets/usuario_list.dart';
 import 'package:test_itti_flutter/shared/utils/date_format_utils.dart';
 
 class UsuarioForm extends StatefulWidget {

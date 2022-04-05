@@ -16,21 +16,11 @@ class UsuarioEntity {
   });
 
   factory UsuarioEntity.fromRemoteJson(Map<String, dynamic> json) {
-    if (!json.containsKey('id')) {
-      throw Exception('El json no contiene la llave id');
-    }
-
-    if (!json.containsKey('avatar')) {
-      throw Exception('El json no contiene la llave avatar');
-    }
-
-    if (!json.containsKey('email')) {
-      throw Exception('El json no contiene la llave email');
-    }
-
     return UsuarioEntity(
       id: json['id'],
-      nombre: (json['first_name'] + " " + json['last_name']) ?? json['nombre'],
+      nombre: (json['first_name'] + " " + json['last_name']) ??
+          json['nombre'] ??
+          "No tiene Nombre",
       email: json['email'],
       avatar: json['avatar'],
     );
