@@ -37,10 +37,26 @@ class _UsuarioFormPageState extends State<UsuarioFormPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UsuarioListPage(),
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text("¿Estás seguro?"),
+                  content: const Text("Se perderán los datos"),
+                  actions: [
+                    TextButton(
+                      child: const Text("Cancelar"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text("Aceptar"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
                 ),
               );
             },

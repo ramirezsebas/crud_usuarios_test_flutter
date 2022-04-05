@@ -112,7 +112,10 @@ class _UsuarioFormState extends State<UsuarioForm> {
           ),
         ),
         if (context.watch<UsuarioFormChangeNotifier>().loading)
-          const Center(child: CircularProgressIndicator())
+          Container(
+            alignment: Alignment.center,
+            child: const CircularProgressIndicator(),
+          )
       ],
     );
   }
@@ -166,17 +169,14 @@ class _UsuarioFormState extends State<UsuarioForm> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error al crear el usuario'),
+          SnackBar(
+            content:
+                Text("Error al ${widget.edit ? 'editar' : 'crear'} el usuario"),
             backgroundColor: Colors.red,
           ),
         );
       }
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const UsuarioListPage(),
-        ),
-      );
+      Navigator.of(context).pop();
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(
