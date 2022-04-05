@@ -25,10 +25,18 @@ class _UsuarioListState extends State<UsuarioList> {
   }
 
   void _loadUsuarios() {
-    if (widget.isRemote) {
-      context.read<UsuarioListChangeNotifier>().getAllUsuariosRemote();
-    } else {
-      context.read<UsuarioListChangeNotifier>().getAllUsuariosLocal();
+    try {
+      context
+          .read<UsuarioListChangeNotifier>()
+          .getAllUsuarios(isRemote: widget.isRemote);
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al traer a los usuarios'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 

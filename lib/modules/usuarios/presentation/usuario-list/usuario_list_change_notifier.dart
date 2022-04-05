@@ -59,22 +59,23 @@ class UsuarioListChangeNotifier extends ChangeNotifier {
     return updated;
   }
 
-  Future<List<UsuarioEntity>> getAllUsuariosLocal() async {
+  Future<List<UsuarioEntity>> getAllUsuarios({required bool isRemote}) async {
     loading = true;
-    usuarios = [];
-    var localUsuarios = await usuarioSqliteRepository.getAll();
-    setUsuarios(localUsuarios);
+    if (isRemote) {
+      usuariosRemote = [];
+    } else {
+      usuarios = [];
+    }
+    var usuarioss = isRemote
+        ? await usuarioDioRepository.getAll()
+        : await usuarioSqliteRepository.getAll();
+    if (isRemote) {
+      setUsuariosRemote(usuarioss);
+    } else {
+      setUsuarios(usuarioss);
+    }
     loading = false;
-    return localUsuarios;
-  }
-
-  Future<List<UsuarioEntity>> getAllUsuariosRemote() async {
-    loading = true;
-    usuariosRemote = [];
-    var remoteUsuarios = await usuarioDioRepository.getAll();
-    setUsuariosRemote(remoteUsuarios);
-    loading = false;
-    return remoteUsuarios;
+    return usuarioss;
   }
 
   Future<UsuarioEntity?> getOneUsuario(String id) async {

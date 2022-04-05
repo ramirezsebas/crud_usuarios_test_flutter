@@ -97,21 +97,31 @@ class _UsuarioCardBodyState extends State<UsuarioCardBody> {
                     );
 
                     if (delete == true) {
-                      var deleted = await context
-                          .read<UsuarioListChangeNotifier>()
-                          .delete(widget.usuario.id!);
-                      if (deleted < 0) {
+                      try {
+                        var deleted = await context
+                            .read<UsuarioListChangeNotifier>()
+                            .delete(widget.usuario.id!);
+                        if (deleted < 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Error al eliminar el usuario'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Usuario eliminado'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        }
+                      } catch (e) {
+                        print(e);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Error al eliminar el usuario'),
                             backgroundColor: Colors.red,
-                          ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Usuario eliminado'),
-                            backgroundColor: Colors.green,
                           ),
                         );
                       }
@@ -131,9 +141,19 @@ class _UsuarioCardBodyState extends State<UsuarioCardBody> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        context
-                            .read<UsuarioFormChangeNotifier>()
-                            .initUsuario(widget.usuario);
+                        try {
+                          context
+                              .read<UsuarioFormChangeNotifier>()
+                              .initUsuario(widget.usuario);
+                        } catch (e) {
+                          print(e);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Error al inicializar usuario/s'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
 
                         return const UsuarioFormPage(
                           edit: true,

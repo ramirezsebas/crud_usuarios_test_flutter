@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -10,26 +12,31 @@ import 'package:test_itti_flutter/shared/infrastructure/base_sqlite_repository.d
 import 'package:test_itti_flutter/shared/infrastructure/get_it_di.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init();
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await GetStorage.init();
 
-  setup();
+    setup();
 
-  await initLocalDatabase();
+    await initLocalDatabase();
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => UsuarioListChangeNotifier(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => UsuarioFormChangeNotifier(),
-        ),
-      ],
-      child: const MyApp(),
-    ),
-  );
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => UsuarioListChangeNotifier(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => UsuarioFormChangeNotifier(),
+          ),
+        ],
+        child: const MyApp(),
+      ),
+    );
+  }, (error, stackTrace) {
+    print("Error :  $error");
+    print("StackTrace :  $stackTrace");
+  });
 }
 
 Future<void> initLocalDatabase() async {

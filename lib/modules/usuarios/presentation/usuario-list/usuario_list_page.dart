@@ -36,9 +36,23 @@ class UsuarioListPage extends StatelessWidget {
                     isRemote: false,
                   ),
                   RefreshIndicator(
-                    onRefresh: () => context
-                        .read<UsuarioListChangeNotifier>()
-                        .getAllUsuariosRemote(),
+                    onRefresh: () {
+                      try {
+                        return context
+                            .read<UsuarioListChangeNotifier>()
+                            .getAllUsuarios(isRemote: true);
+                      } catch (e) {
+                        print(e);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Error al traer a los usuarios'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      return Future.value();
+                    },
                     child: const UsuarioList(
                       isRemote: true,
                     ),

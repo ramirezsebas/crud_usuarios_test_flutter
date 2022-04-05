@@ -62,7 +62,17 @@ class MainButtons extends StatelessWidget {
             child: const Text('Eliminar'),
             onPressed: () {
               Navigator.of(context).pop();
-              context.read<UsuarioListChangeNotifier>().deleteAll();
+              try {
+                context.read<UsuarioListChangeNotifier>().deleteAll();
+              } catch (e) {
+                print(e);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Error al eliminar los usuarios'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
             },
           ),
         ],
