@@ -121,9 +121,9 @@ class _UsuarioFormState extends State<UsuarioForm> {
   Future<void> _changeDate(BuildContext context) async {
     var fecha = await showDatePicker(
       context: context,
-      initialDate: DateTime(DateTime.now().year - 10),
+      initialDate: DateTime(DateTime.now().year - 5),
       firstDate: DateTime(1700),
-      lastDate: DateTime(DateTime.now().year - 10),
+      lastDate: DateTime(2030),
     );
 
     if (fecha != null) {
