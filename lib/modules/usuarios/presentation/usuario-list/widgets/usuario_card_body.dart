@@ -108,13 +108,6 @@ class _UsuarioCardBodyState extends State<UsuarioCardBody> {
                               backgroundColor: Colors.red,
                             ),
                           );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Usuario eliminado'),
-                              backgroundColor: Colors.green,
-                            ),
-                          );
                         }
                       } catch (e) {
                         print(e);
