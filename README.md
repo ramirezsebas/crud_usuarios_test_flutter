@@ -1,5 +1,6 @@
 # Crud de Usuarios en base de datos internas (SQLite)
 
+Entidad Usuario para BD Local
 Campos:
 
 - id, tipo: numerico
